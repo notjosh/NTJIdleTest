@@ -8,11 +8,29 @@
 
 #import "NTJAppDelegate.h"
 
+@interface NTJAppDelegate ()
+
+@property (nonatomic, strong) NSTimer *timer;
+
+@property (nonatomic, weak) IBOutlet NSTextField *timeTextField;
+
+@end
+
 @implementation NTJAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(handleTick:) userInfo:nil repeats:YES];
+}
+
+#pragma mark - Events
+
+- (void)handleTick:(NSTimer *)timer
+{
+    CFTimeInterval time = CGEventSourceSecondsSinceLastEventType(kCGEventSourceStateCombinedSessionState, kCGAnyInputEventType);
+
+    NSString *timeString = [NSString stringWithFormat:@"%0.1f", time];
+    [self.timeTextField setStringValue:timeString];
 }
 
 @end
